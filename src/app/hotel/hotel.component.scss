@@ -1,0 +1,22 @@
+.container{
+    box-shadow: 0 6px 8px rgba(0,0,0,0.12), 0 3px 4px rgba(0,0,0,0.24);
+
+    .hotel-image{
+        min-height: 350px;
+        max-height: 450px;
+
+        img{
+            min-height: 350px;
+            max-height: 400px;
+        }
+    }
+    .competitors{
+        height: 85px;
+    }
+
+    .price-group{
+        min-height: 350px;
+        max-height: 450px;
+    }
+
+}

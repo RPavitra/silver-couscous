@@ -1,0 +1,120 @@
+<!-- select currency -->
+<div class="container-md m-auto">
+    <select class="form-select form-select-lg mb-3 col-6 m-4 w-25" (change)="switchCurrency(selected_currency.value)" #selected_currency>
+        <option [selected]="item==currency" *ngFor="let item of currencies" [value]="item" >{{item}}</option>
+    </select>
+</div>
+<!-- end -->
+
+<!-- container -->
+<div class="container mt-4 mb-4 bg-light" *ngFor="let item of displayData">
+    <!-- row -->
+    <div class="row p-3 pr-4">
+
+        <!-- image column -->
+        <div class="col-12 col-sm-12 col-md-5 col-lg-4 hotel-image">
+            <img width="100%" height="100%" src="{{item.hotel_detail.photo}}">
+        </div>
+        <!-- end of image column -->
+
+        <!-- hotel info column -->
+        <div class="col-12 col-sm-12 col-md-7 col-lg-8">
+            <!-- row -->
+            <div class="row">
+                <!-- hotel details column -->
+                <div class="col-12 col-sm-12 col-md-9 col-lg-9 col-xl-7">
+                    <!-- row -->
+                    <div class="row">
+
+                        <!-- header column -->
+                        <div class="col-12">
+                            <div class="p-2">
+                                <p class="fw-bolder ">{{item.hotel_detail.name}}</p>
+                                <p class="fst-normal">{{item.hotel_detail.address}}</p>
+                            </div>
+                            <hr>
+                        </div>
+                        <!-- end of header column -->
+
+                        <!-- rating and star columns -->
+                        <div class="col-12">
+                            <div class="row p-2">
+                                <!-- stars -->
+                                <div class="col-10">
+                                    <ngb-rating [(rate)]="item.hotel_detail.stars" [readonly]="true" [max]="5"></ngb-rating>
+                                </div>
+                                <!-- rating -->
+                                <div class="col-2">
+                                    <span class="bg-warning p-2 fw-bolder">{{item.hotel_detail.rating}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end of rating and star column -->
+
+                        <!-- competitor column -->
+                        <div class="col-12" *ngIf="item.currency_detail">
+                            <div class="row p-2" *ngIf="item.currency_detail.competitors" >
+                                
+                                <!-- competitors -->
+                                <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-center p-2" *ngFor="let competitor of item.currency_detail.competitors;index as i">
+                                    <div *ngIf="i<3" class="mint-blue p-1 competitors">
+                                        <span class="fw-bolder">{{competitor.name}}</span><br>   
+                                        <span class="fst-normal">{{competitor.price | currency : currency}}</span><br>   
+                                        <span class="bg-danger badge" *ngIf="competitor.higher">&#8593; {{competitor.higher | percent : '1.2'}}</span>   
+                                    </div>
+                                </div>
+                                <!-- end of competitors -->
+
+                                <!-- more competitors -->
+                                <div class="col-12" ngbDropdown class="d-inline">
+                                    <button class="btn bg-dark text-white" id="dropdownBasic1" ngbDropdownToggle *ngIf="item.currency_detail.competitors.length > 3">More Sites</button>
+                                    <div ngbDropdownMenu aria-labelledby="dropdownBasic1" >
+                                        <div *ngFor="let competitor of item.currency_detail.competitors | slice:3" ngbDropdownItem class="fw-bolder">
+                                            {{competitor.name}} - 
+                                            <b> {{competitor.price | currency : currency}} </b>
+                                            <div class="badge bg-danger p-1" *ngIf="competitor.higher"> &#8593; {{competitor.higher | percent : '1.2'}}</div>
+                                        </div>   
+                                    </div>
+                                </div>
+                                <!-- end of more competitors -->
+
+                            </div>
+                        </div>
+                        <!-- end of competitor column -->
+                        
+                    </div>
+                    <!-- end of row -->
+                </div>
+                <!-- end of hotel details -->
+
+                <!-- pricing column -->
+                <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-5 d-flex align-content-end justify-content-center flex-wrap price-group">
+                    <div class="row text-center">
+                        <div *ngIf="item.currency_detail">
+                            <div class="col  p-2 fw-bold" *ngIf="item.currency_detail.savings">SAVE {{item.currency_detail.savings | percent: '1.2'}}</div>
+                            <div class="col text-decoration-line-through text-danger">{{item.currency_detail.most_expensive | currency: currency}}</div>
+                            <div class="col bg-info text-white p-2 fs-6 fw-bolder">{{item.currency_detail.price | currency: currency}}</div>
+                            <button type="button" class="btn mr-2" *ngIf="item.currency_detail.taxes_and_fees" placement="bottom" ngbTooltip="Tax : {{item.currency_detail.taxes_and_fees.tax | currency: currency}} & Fee : {{item.currency_detail.taxes_and_fees.hotel_fees | currency: currency}}">
+                                * Includes Taxes & Fees
+                            </button>
+                        </div>
+                        <div *ngIf="!item.currency_detail">
+                            <div class="col fw-bold text-white p-2 bg-danger">Rates Unavailable</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end of pricing column -->
+
+            </div>
+            <!-- end of row -->
+        </div>
+        <!-- end of hotel info column -->
+    </div>
+    <!-- end row -->
+</div>
+<!-- end of container -->
+
+
+
+
+
